@@ -78,9 +78,7 @@ namespace BarberShop
             => (IEnumerable<Barber>)this.barbers.Values.OrderByDescending(v => v.Count);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithStarsDecsendingAndHaircutPriceAsc()
-        {
-            throw new NotImplementedException();
-        }
+            => (IEnumerable<Barber>)this.barbers.Keys.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
 
         public IEnumerable<Client> GetClientsSortedByAgeDescAndBarbersStarsDesc()
         {
