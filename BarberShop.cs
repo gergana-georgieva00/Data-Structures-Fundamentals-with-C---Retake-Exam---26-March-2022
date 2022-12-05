@@ -17,7 +17,7 @@ namespace BarberShop
 
         public void AddBarber(Barber b)
         {
-            if (!this.barbers.ContainsKey(b))
+            if (this.barbers.ContainsKey(b))
             {
                 throw new ArgumentException();
             }
@@ -78,7 +78,7 @@ namespace BarberShop
             => (IEnumerable<Barber>)this.barbers.Values.OrderByDescending(v => v.Count);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithStarsDecsendingAndHaircutPriceAsc()
-            => (IEnumerable<Barber>)this.barbers.Keys.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
+            => this.barbers.Keys.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
 
         public IEnumerable<Client> GetClientsSortedByAgeDescAndBarbersStarsDesc()
             => this.clients.Where(c => c.Barber != null).OrderByDescending(c => c.Age).ThenByDescending(c => c.Barber.Stars);
