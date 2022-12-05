@@ -17,7 +17,7 @@ namespace BarberShop
 
         public void AddBarber(Barber b)
         {
-            if (this.barbers.Any(ba => ba.Name == b.Name))
+            if (this.barbers.Contains(b))
             {
                 throw new ArgumentException();
             }
@@ -27,7 +27,7 @@ namespace BarberShop
 
         public void AddClient(Client c)
         {
-            if (this.clients.Any(cl => cl.Name == cl.Name))
+            if (this.clients.Contains(c))
             {
                 throw new ArgumentException();
             }
@@ -36,10 +36,10 @@ namespace BarberShop
         }
 
         public bool Exist(Barber b)
-            => this.barbers.Any(ba => ba.Name == b.Name);
+            => this.barbers.Contains(b);
 
         public bool Exist(Client c)
-            => this.clients.Any(cl => cl.Name == c.Name);
+            => this.clients.Contains(c);
 
         public IEnumerable<Barber> GetBarbers()
             => this.barbers;
@@ -49,11 +49,10 @@ namespace BarberShop
 
         public void AssignClient(Barber b, Client c)
         {
-            if (this.barbers.Any(ba => ba.Name == b.Name) && this.clients.Any(cl => cl.Name == c.Name))
+            if (this.barbers.Contains(b) && this.clients.Contains(c))
             {
-                var client = this.clients.Find(cl => cl.Name == c.Name);
-                barbers.Find(ba => ba.Name == b.Name).Clients.Add(client);
-                client.Barber = b;
+                b.Clients.Add(c);
+                c.Barber = b;
             }
             else
             {
@@ -63,12 +62,12 @@ namespace BarberShop
 
         public void DeleteAllClientsFrom(Barber b)
         {
-            if (!this.barbers.Any(ba => ba.Name == b.Name))
+            if (!this.barbers.Contains(b))
             {
                 throw new ArgumentException();
             }
 
-            this.barbers.Find(ba => ba.Name == b.Name).Clients = new List<Client>();
+            b.Clients = new List<Client>();
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
