@@ -49,7 +49,14 @@ namespace BarberShop
 
         public void AssignClient(Barber b, Client c)
         {
-            throw new NotImplementedException();
+            if (this.barbers.Any(ba => ba.Name == b.Name) && this.clients.Any(cl => cl.Name == c.Name))
+            {
+                this.clients.Find(cl => cl.Name == c.Name).Barber = this.barbers.Find(ba => ba.Name == b.Name);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
         }
 
         public void DeleteAllClientsFrom(Barber b)
