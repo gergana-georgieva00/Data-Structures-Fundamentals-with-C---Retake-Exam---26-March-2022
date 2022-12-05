@@ -27,7 +27,12 @@ namespace BarberShop
 
         public void AddClient(Client c)
         {
-            throw new NotImplementedException();
+            if (this.clients.Any(cl => cl.Name == cl.Name))
+            {
+                throw new ArgumentException();
+            }
+
+            this.clients.Add(c);
         }
 
         public bool Exist(Barber b)
