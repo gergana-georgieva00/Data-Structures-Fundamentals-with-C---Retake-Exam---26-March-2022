@@ -76,9 +76,7 @@ namespace BarberShop
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
-        {
-            throw new NotImplementedException();
-        }
+            => this.clients.Where(c => c.Barber is null);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithClientsCountDesc()
         {
