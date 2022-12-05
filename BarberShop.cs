@@ -6,23 +6,23 @@ namespace BarberShop
 {
     public class BarberShop : IBarberShop
     {
-        private Dictionary<Barber, List<Client>> barbers;
+        private List<Barber> barbers;
         private List<Client> clients;
 
         public BarberShop()
         {
-            this.barbers = new Dictionary<Barber, List<Client>>();
+            this.barbers = new List<Barber>();
             this.clients = new List<Client>();
         }
 
         public void AddBarber(Barber b)
         {
-            if (this.barbers.ContainsKey(b))
+            if (this.barbers.Any(ba => ba.Name == b.Name))
             {
                 throw new ArgumentException();
             }
 
-            this.barbers.Add(b, new List<Client>());
+            this.barbers.Add(b);
         }
 
         public void AddClient(Client c)
@@ -36,13 +36,13 @@ namespace BarberShop
         }
 
         public bool Exist(Barber b)
-            => this.barbers.ContainsKey(b);
+            => this.barbers.Any(ba => ba.Name == b.Name);
 
         public bool Exist(Client c)
             => this.clients.Any(cl => cl.Name == c.Name);
 
         public IEnumerable<Barber> GetBarbers()
-            => this.barbers.Keys;
+            => this.barbers;
 
         public IEnumerable<Client> GetClients()
             => this.clients;
@@ -75,7 +75,17 @@ namespace BarberShop
             => this.clients.Where(c => c.Barber is null);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithClientsCountDesc()
-            => (IEnumerable<Barber>)this.barbers.Values.OrderByDescending(v => v.Count);
+        {
+            //var sorted = from entry in barbers orderby entry.Value.Count descending select entry.Key;
+            var barbersFiltered = new List<Barber>();
+
+            foreach (var barber in barbers.OrderByDescending(b => b.Value.Count))
+            {
+                barbersFiltered.Add(barber.Key);
+            }
+
+            return barbersFiltered;
+        }
 
         public IEnumerable<Barber> GetAllBarbersSortedWithStarsDecsendingAndHaircutPriceAsc()
             => this.barbers.Keys.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
