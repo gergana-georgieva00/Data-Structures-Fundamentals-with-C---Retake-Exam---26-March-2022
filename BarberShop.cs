@@ -61,6 +61,11 @@ namespace BarberShop
 
         public void DeleteAllClientsFrom(Barber b)
         {
+            if (!(this.barbers.Any(ba => ba.Name == b.Name)))
+            {
+                throw new ArgumentException();
+            }
+
             foreach (var client in clients)
             {
                 if (client.Barber.Name == b.Name)
