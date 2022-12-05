@@ -6,23 +6,23 @@ namespace BarberShop
 {
     public class BarberShop : IBarberShop
     {
-        private List<Barber> barbers;
+        private Dictionary<Barber, Client> barbers;
         private List<Client> clients;
 
         public BarberShop()
         {
-            this.barbers = new List<Barber>();
+            this.barbers = new Dictionary<Barber, Client>();
             this.clients = new List<Client>();
         }
 
         public void AddBarber(Barber b)
         {
-            if (this.barbers.Any(b => b.Name == b.Name))
+            if (!this.barbers.ContainsKey(b))
             {
                 throw new ArgumentException();
             }
 
-            this.barbers.Add(b);
+            this.barbers.Add(b, null);
         }
 
         public void AddClient(Client c)
@@ -36,13 +36,13 @@ namespace BarberShop
         }
 
         public bool Exist(Barber b)
-            => this.barbers.Any(ba => ba.Name == b.Name);
+            => this.barbers.ContainsKey(b);
 
         public bool Exist(Client c)
             => this.clients.Any(cl => cl.Name == c.Name);
 
         public IEnumerable<Barber> GetBarbers()
-            => this.barbers;
+            => this.barbers.Keys;
 
         public IEnumerable<Client> GetClients()
             => this.clients;
