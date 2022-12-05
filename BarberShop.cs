@@ -6,12 +6,12 @@ namespace BarberShop
 {
     public class BarberShop : IBarberShop
     {
-        private Dictionary<Barber, Client> barbers;
+        private Dictionary<Barber, List<Client>> barbers;
         private List<Client> clients;
 
         public BarberShop()
         {
-            this.barbers = new Dictionary<Barber, Client>();
+            this.barbers = new Dictionary<Barber, List<Client>>();
             this.clients = new List<Client>();
         }
 
@@ -22,7 +22,7 @@ namespace BarberShop
                 throw new ArgumentException();
             }
 
-            this.barbers.Add(b, null);
+            this.barbers.Add(b, new List<Client>());
         }
 
         public void AddClient(Client c)
@@ -49,9 +49,11 @@ namespace BarberShop
 
         public void AssignClient(Barber b, Client c)
         {
-            if (this.barbers.Any(ba => ba.Name == b.Name) && this.clients.Any(cl => cl.Name == c.Name))
+            if (this.barbers.ContainsKey(b) && this.clients.Any(cl => cl.Name == c.Name))
             {
-                this.clients.Find(cl => cl.Name == c.Name).Barber = this.barbers.Find(ba => ba.Name == b.Name);
+                var client = this.clients.Find(cl => cl.Name == c.Name);
+                barbers[b].Add(client);
+                client.Barber = b;
             }
             else
             {
