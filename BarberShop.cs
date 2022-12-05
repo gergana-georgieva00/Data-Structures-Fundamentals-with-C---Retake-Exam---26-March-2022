@@ -42,14 +42,10 @@ namespace BarberShop
             => this.clients.Any(cl => cl.Name == c.Name);
 
         public IEnumerable<Barber> GetBarbers()
-        {
-            throw new NotImplementedException();
-        }
+            => this.barbers;
 
         public IEnumerable<Client> GetClients()
-        {
-            throw new NotImplementedException();
-        }
+            => this.clients;
 
         public void AssignClient(Barber b, Client c)
         {
