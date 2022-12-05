@@ -61,7 +61,13 @@ namespace BarberShop
 
         public void DeleteAllClientsFrom(Barber b)
         {
-            throw new NotImplementedException();
+            foreach (var client in clients)
+            {
+                if (client.Barber.Name == b.Name)
+                {
+                    client.Barber = null;
+                }
+            }
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
