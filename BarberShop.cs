@@ -63,27 +63,19 @@ namespace BarberShop
 
         public void DeleteAllClientsFrom(Barber b)
         {
-            if (!(this.barbers.Any(ba => ba.Name == b.Name)))
+            if (!this.barbers.ContainsKey(b))
             {
                 throw new ArgumentException();
             }
 
-            foreach (var client in clients)
-            {
-                if (client.Barber.Name == b.Name)
-                {
-                    client.Barber = null;
-                }
-            }
+            this.barbers[b] = new List<Client>();
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
             => this.clients.Where(c => c.Barber is null);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithClientsCountDesc()
-        {
-            throw new NotImplementedException();
-        }
+            => (IEnumerable<Barber>)this.barbers.Values.OrderByDescending(v => v.Count);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithStarsDecsendingAndHaircutPriceAsc()
         {
