@@ -36,14 +36,10 @@ namespace BarberShop
         }
 
         public bool Exist(Barber b)
-        {
-            throw new NotImplementedException();
-        }
+            => this.barbers.Any(ba => ba.Name == b.Name);
 
         public bool Exist(Client c)
-        {
-            throw new NotImplementedException();
-        }
+            => this.clients.Any(cl => cl.Name == c.Name);
 
         public IEnumerable<Barber> GetBarbers()
         {
