@@ -49,10 +49,10 @@ namespace BarberShop
 
         public void AssignClient(Barber b, Client c)
         {
-            if (this.barbers.ContainsKey(b) && this.clients.Any(cl => cl.Name == c.Name))
+            if (this.barbers.Any(ba => ba.Name == b.Name) && this.clients.Any(cl => cl.Name == c.Name))
             {
                 var client = this.clients.Find(cl => cl.Name == c.Name);
-                barbers[b].Add(client);
+                barbers.Find(ba => ba.Name == b.Name).Clients.Add(client);
                 client.Barber = b;
             }
             else
@@ -63,32 +63,22 @@ namespace BarberShop
 
         public void DeleteAllClientsFrom(Barber b)
         {
-            if (!this.barbers.ContainsKey(b))
+            if (!this.barbers.Any(ba => ba.Name == b.Name))
             {
                 throw new ArgumentException();
             }
 
-            this.barbers[b] = new List<Client>();
+            this.barbers.Find(ba => ba.Name == b.Name).Clients = new List<Client>();
         }
 
         public IEnumerable<Client> GetClientsWithNoBarber()
             => this.clients.Where(c => c.Barber is null);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithClientsCountDesc()
-        {
-            //var sorted = from entry in barbers orderby entry.Value.Count descending select entry.Key;
-            var barbersFiltered = new List<Barber>();
-
-            foreach (var barber in barbers.OrderByDescending(b => b.Value.Count))
-            {
-                barbersFiltered.Add(barber.Key);
-            }
-
-            return barbersFiltered;
-        }
+            => this.barbers.OrderByDescending(b => b.Clients.Count);
 
         public IEnumerable<Barber> GetAllBarbersSortedWithStarsDecsendingAndHaircutPriceAsc()
-            => this.barbers.Keys.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
+            => this.barbers.OrderByDescending(b => b.Stars).ThenBy(b => b.HaircutPrice);
 
         public IEnumerable<Client> GetClientsSortedByAgeDescAndBarbersStarsDesc()
             => this.clients.Where(c => c.Barber != null).OrderByDescending(c => c.Age).ThenByDescending(c => c.Barber.Stars);
